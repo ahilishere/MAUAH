@@ -1,0 +1,134 @@
+<script>
+// slides
+const slide1=document.getElementById('slide1');
+const slide2=document.getElementById('slide2');
+const slide3=document.getElementById('slide3');
+const slide4=document.getElementById('slide4');
+const slide5=document.getElementById('slide5');
+const slide6=document.getElementById('slide6');
+
+const loveSong=document.getElementById('loveSong');
+
+/* 🎉 YES BUTTON */
+document.getElementById('yesBtn').onclick=()=>{
+  loveSong.play().catch(()=>{});
+
+  confetti({particleCount:160,spread:90,origin:{y:0.6}});
+  setTimeout(()=>{
+    confetti({particleCount:120,spread:120,origin:{y:0.4}});
+  },400);
+
+  slide1.classList.remove('active');
+  slide2.classList.add('active');
+  startTyping();
+};
+
+/* 🏃 MOVING NO BUTTON */
+const noBtn=document.getElementById('noBtn');
+let noCount=0;
+
+noBtn.addEventListener('mouseover',()=>{
+  const x=Math.random()*(window.innerWidth-noBtn.offsetWidth);
+  const y=Math.random()*(window.innerHeight-noBtn.offsetHeight);
+  noBtn.style.position='absolute';
+  noBtn.style.left=x+'px';
+  noBtn.style.top=y+'px';
+});
+
+noBtn.addEventListener('click',()=>{
+  noCount++;
+  alert(noCount===1?"Nopeee 😅":"Still nopeee 😜");
+});
+
+/* ⌨️ typing confession */
+const msg=`Ilysmmm zilya yu matter sooo soo much to Mee.
+
+I just wanted you to know how much you mean to me. Talking to you makes my days better, and being around you feels different in the best way. I really like you, and I'm grateful I get to spend this Valentine’s with youuu.
+
+-Yours forever: Aahil..❤️`;
+
+const textDiv=document.getElementById('confessionText');
+const nextBtn=document.getElementById('toSlide3Btn');
+
+function startTyping(){
+  let i=0;
+  function type(){
+    if(i<msg.length){
+      textDiv.innerHTML+=msg[i];
+      i++;
+      setTimeout(type,35);
+    }else{
+      nextBtn.style.display='inline-block';
+    }
+  }
+  type();
+}
+
+nextBtn.onclick=()=>{
+  slide2.classList.remove('active');
+  slide3.classList.add('active');
+};
+
+/* 🎁 TRACK GIFTS */
+let giftsPicked={
+  choco:false,
+  flowers:false,
+  heart:false
+};
+
+/* helper to return to gift screen */
+function showGiftThenReturn(slideToShow){
+  slide3.classList.remove('active');
+  slideToShow.classList.add('active');
+
+  setTimeout(()=>{
+    slideToShow.classList.remove('active');
+    slide3.classList.add('active');
+    checkAllPicked();
+  },2200);
+}
+
+/* 🎁 gift clicks */
+document.getElementById('chocoBox').onclick=()=>{
+  giftsPicked.choco=true;
+  showGiftThenReturn(slide4);
+};
+
+document.getElementById('flowersBox').onclick=()=>{
+  giftsPicked.flowers=true;
+  showGiftThenReturn(slide5);
+};
+
+document.getElementById('heartBox').onclick=()=>{
+  giftsPicked.heart=true;
+  showGiftThenReturn(slide6);
+};
+
+/* 🎯 final button logic */
+function checkAllPicked(){
+  if(giftsPicked.choco && giftsPicked.flowers && giftsPicked.heart){
+    if(!document.getElementById('finalBtn')){
+      const btn=document.createElement('button');
+      btn.id='finalBtn';
+      btn.innerText='One last thing… 💌';
+      btn.style.marginTop='25px';
+      slide3.appendChild(btn);
+
+      btn.onclick=showFinalLove;
+    }
+  }
+}
+
+/* 💖 final love message */
+function showFinalLove(){
+  slide3.innerHTML=`
+    <h1 style="max-width:700px;">
+    Hey zilya tis website took me abt like 7 hours or so 😭<br><br>
+    sooo yehhh I took a lot of efforttt sooo that meanss….<br><br>
+    <span style="font-size:1.3em;">I LOVE YU MOREEE ❤️❤️</span>
+    </h1>
+  `;
+
+  confetti({particleCount:200,spread:120,origin:{y:0.6}});
+}
+</script>
